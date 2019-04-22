@@ -1,7 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Board implements Comparable{
+public class Board{
     Space[][] board;
     final int width;
     public Board(){
@@ -48,7 +48,7 @@ public class Board implements Comparable{
     public ArrayList<Move> getPositionMoves(Vector v){
         return getSpace(v).getMoves(this,v);
     }
-    public float rank(){
+    public float rank(boolean isBlack){
         //Kings are worth 2 points
         //Each piece is worth 0.1 * how far it went
 
@@ -60,11 +60,17 @@ public class Board implements Comparable{
                 if(space instanceof Piece){
                     Piece piece=(Piece)space;
                     if(piece.isKing){
-                        if(piece.isBlack)score-=2;
-                        else score+=2;
+                        if(piece.isBlack==isBlack)score+=2;
+                        else score-=2;
                     } else{
-                        if(piece.isBlack)score-=0.1*rowI;
-                        else score+=0.1*(width-1-rowI);
+                        if(piece.isBlack){
+                            if(isBlack)score+=0.1*rowI;
+                            else score-=0.1*rowI;
+                        }else{
+                            if(isBlack)score-=0.1*(width-1-rowI);
+                            else score+=0.1*(width-1-rowI);
+                        }
+
                     }
                 }
             }
@@ -72,13 +78,27 @@ public class Board implements Comparable{
         if(Math.abs(score)<0.01)score=0;//account for floating point errors
         return score;
     }
+    public float rank(boolean blackStarts, int n){
+        if(n==0)return rank(blackStarts);
+
+        ArrayList<Move> moves=getMoves(blackStarts);
+        ArrayList<Board> outcomes=new ArrayList<>();
+        for(int i=0;i<moves.size();i++){
+            outcomes.add(moves.get(i).doMove());
+        }
 
 
+        if(moves.size()==0)return -100;
+        float bestRank=-moves.get(0).doMove().rank(!blackStarts,n-1);
+        for(int i=0;i<moves.size();i++) {
+            if(-moves.get(0).doMove().rank(!blackStarts,n-1)>bestRank){
+                bestRank=-moves.get(0).doMove().rank(!blackStarts,n-1);
+            }
+        }
+        return bestRank;
 
-    public int compareTo(Object o){
-        assert(o instanceof Board);
-        return (int)Math.signum(rank()-((Board)o).rank());
     }
+
 
     public ArrayList<Move> getMoves(boolean isBlack){
         ArrayList<Move> moves= new ArrayList<Move>();
@@ -95,19 +115,12 @@ public class Board implements Comparable{
     public Move getBestMove(boolean isBlack){
         ArrayList<Move> moves=getMoves(isBlack);
         int bestMoveIndex=0;
-        float bestRank=moves.get(0).doMove().rank();
+        float bestRank=moves.get(0).doMove().rank(isBlack);
         for(int i=0;i<moves.size();i++){
-            float rank=moves.get(i).doMove().rank();
-            if(isBlack){
-                if(rank<bestRank){
-                    bestMoveIndex=i;
-                    bestRank=rank;
-                }
-            }else{
-                if(rank>bestRank){
-                    bestMoveIndex=i;
-                    bestRank=rank;
-                }
+            float rank=moves.get(i).doMove().rank(isBlack);
+            if(rank>bestRank){
+                bestMoveIndex=i;
+                bestRank=rank;
             }
         }
         return moves.get(bestMoveIndex);
@@ -115,22 +128,30 @@ public class Board implements Comparable{
     public Move getBestMove(int n, boolean isBlack){
         ArrayList<Move> moves=getMoves(isBlack);
         int bestMoveIndex=0;
-        float bestRank=moves.get(0).doMove().rank();
+
+        float bestRank=moves.get(0).doMove().rank(isBlack);
         for(int i=0;i<moves.size();i++){
-            float rank=moves.get(i).doMove().rank();
-            if(isBlack){
+            float rank=moves.get(i).doMove().rank(isBlack,n);
+
                 if(rank<bestRank){
                     bestMoveIndex=i;
                     bestRank=rank;
                 }
-            }else{
-                if(rank>bestRank){
-                    bestMoveIndex=i;
-                    bestRank=rank;
-                }
-            }
+
         }
         return moves.get(bestMoveIndex);
+    }
+    public void display(){
+        System.out.print("  ");
+        for( int i=0;i<width;i++) System.out.print(i);
+        System.out.println();
+        for(int rowI=0;rowI<width;rowI++){
+            System.out.print(rowI+" ");
+            for(int colI=0;colI<width;colI++) {
+                System.out.print(board[rowI][colI]);
+            }
+            System.out.println();
+        }
     }
 
 }
