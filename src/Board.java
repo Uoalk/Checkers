@@ -89,10 +89,10 @@ public class Board{
 
 
         if(moves.size()==0)return -100;
-        float bestRank=-moves.get(0).doMove().rank(!blackStarts,n-1);
+        float bestRank=moves.get(0).doMove().rank(!blackStarts,n-1);
         for(int i=0;i<moves.size();i++) {
             if(-moves.get(0).doMove().rank(!blackStarts,n-1)>bestRank){
-                bestRank=-moves.get(0).doMove().rank(!blackStarts,n-1);
+                bestRank=moves.get(0).doMove().rank(!blackStarts,n-1);
             }
         }
         return bestRank;
@@ -133,7 +133,7 @@ public class Board{
         for(int i=0;i<moves.size();i++){
             float rank=moves.get(i).doMove().rank(isBlack,n);
 
-                if(rank<bestRank){
+                if(rank>bestRank){
                     bestMoveIndex=i;
                     bestRank=rank;
                 }
@@ -143,7 +143,9 @@ public class Board{
     }
     public void display(){
         System.out.print("  ");
-        for( int i=0;i<width;i++) System.out.print(i);
+        for(int i=0;i<width;i++) {
+            System.out.print(i);
+        }
         System.out.println();
         for(int rowI=0;rowI<width;rowI++){
             System.out.print(rowI+" ");

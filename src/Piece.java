@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 public class Piece extends Space {
-    boolean isBlack;
+    public boolean isBlack;
     boolean isKing;
     public Piece(boolean isBlack){
         super();
