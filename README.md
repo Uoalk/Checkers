@@ -10,6 +10,9 @@ We currently look 3 turns into the future. At about 5 the recursion takes a very
 
 You can play the UI or you can watch the UI’s play. We use depth-first search and recursion for our min max. This makes it hard to identify similar branches but is more efficient in the long run. If we had more time we might try implementing threading to speed up the search but more then 2X.
 
+![Image 1](https://github.com/Uoalk/Checkers/blob/master/Screenshot%201.jpg)
+![Image 2](https://github.com/Uoalk/Checkers/blob/master/Screenshot%202.jpg )
+
 # Files
 Main - has the UI, runs the demo/play options
 Space - the empty slot on the board where there are no pieces present
