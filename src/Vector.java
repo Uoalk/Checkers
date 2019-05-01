@@ -1,5 +1,7 @@
 public class Vector {
     int x,y;
+    //this class literally just has an x and y vector to be useful for the position class
+        //nothing interesting to see here
     public Vector(int x,int y){
         this.x=x;
         this.y=y;

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+//constructor for piece
 public class Piece extends Space {
     public boolean isBlack;
     boolean isKing;
@@ -11,6 +12,7 @@ public class Piece extends Space {
     public void king(){
         this.isKing=true;
     }
+    //prints out the different colors and capitalizes if they're king
     public String toString(){
         if(isKing){
             if(this.isBlack) return "B";
@@ -21,6 +23,7 @@ public class Piece extends Space {
         }
 
     }
+    //using the moves class it finds all legal moves
     public ArrayList<Move> getMoves(Board board, Vector pos){
         ArrayList<Move> moves =new ArrayList<>();
         moves.addAll(getWalks(board,pos));
@@ -29,6 +32,7 @@ public class Piece extends Space {
         return moves;
     }
 
+    //using the moves class it finds all the moves where the piece can move just one tile
     public ArrayList<Move> getWalks(Board board,Vector pos){
         ArrayList<Move> moves =new ArrayList<>();
         ArrayList<Move> potentialMoves =new ArrayList<>();
@@ -48,6 +52,7 @@ public class Piece extends Space {
         }
         return moves;
     }
+    //using the moves class it gets all the moves where the piece can skip
     public ArrayList<Move> getJumps(Board board, Vector pos){
         ArrayList<Move> moves =new ArrayList<>();
         ArrayList<Move> potentialMoves =new ArrayList<>();
@@ -68,6 +73,7 @@ public class Piece extends Space {
 
         return moves;
     }
+    //returns a deep copy of the piece
     public Piece getCopy(){
         Piece p=new Piece(isBlack);
         p.isKing=this.isKing;

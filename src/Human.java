@@ -4,8 +4,10 @@ import java.util.Scanner;
 public class Human {
     Scanner s;
     public Human(){
+        //creates a scanner with the human so that you can input moves when you play
         s=new Scanner(System.in);
     }
+    //you have to select a correct move from the variety of legal ones and it inputs that to the board
     public Move getMove(Board b, boolean isBlack){
         b.display();
         ArrayList<Move> moves=b.getMoves(isBlack);

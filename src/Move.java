@@ -5,6 +5,7 @@ public class Move {
     Board board;
     boolean isJump;
     public Move(Piece piece, Board board, Vector pos, Vector move){
+        //initialized with a piece, board, position, and move
         this.piece=piece.getCopy();
         this.board=board;
         this.from=new Vector(pos);
@@ -23,9 +24,11 @@ public class Move {
 
 
         }
+        //throws error if move is invalid
         else throw(new Error("Invalid Move"));
 
     }
+
     private boolean canMove(){//takes in the position, the attempted move direction
         if(board.isEmpty(to))return true;
         return false;
@@ -44,9 +47,11 @@ public class Move {
         if(isJump)return canJump();
         else return canMove();
     }
+    //returns the two vectors as a possibility for the moves
     public String toString(){
         return from+" to "+to;
     }
+    //returns a board with new move
     public Board doMove(){
         assert(isValidMove());
         Board b=board.getCopy();
